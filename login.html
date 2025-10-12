@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Login - TaxForge Portal</title>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f5f7fa; padding: 2rem; }
+    form { max-width: 400px; margin: auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 3px 15px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input { width: 100%; padding: 0.6rem; margin-top: 0.3rem; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
+    button { margin-top: 1.5rem; background-color: #FF6F3C; color: white; border: none; padding: 0.75rem; cursor: pointer; font-weight: 700; border-radius: 5px; }
+    button:disabled { background-color: #f4a381; cursor: not-allowed; }
+    .message { margin-top: 1rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Login to TaxForge Portal</h1>
+  <form id="loginForm">
+    <label for="email">Email Address:</label>
+    <input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+    <label for="password">15-Digit Password:</label>
+    <input id="password" name="password" type="password" required placeholder="Enter 15-digit password" maxlength="15" minlength="15" pattern=".{15,15}" title="Password must be exactly 15 characters" />
+    
+    <label for="otp">2FA Code (if enabled):</label>
+    <input id="otp" name="otp" type="text" placeholder="Enter 6-digit code" pattern="\\d{6}" maxlength="6" minlength="6" />
+    
+    <button type="submit" disabled>Login</button>
+    <div class="message" id="message"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const emailInput = form.email;
+    const passInput = form.password;
+    const otpInput = form.otp;
+    const submitBtn = form.querySelector('button');
+    const msgDiv = document.getElementById('message');
+
+    function validateForm() {
+      const isValidEmail = emailInput.validity.valid;
+      const isValidPass = passInput.value.length === 15;
+      // OTP optional, disable button only on email and password validity
+      submitBtn.disabled = !(isValidEmail && isValidPass);
+    }
+
+    emailInput.addEventListener('input', validateForm);
+    passInput.addEventListener('input', validateForm);
+    otpInput.addEventListener('input', validateForm);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      msgDiv.textContent = '';
+      submitBtn.disabled = true;
+
+      const loginData = {
+        email: emailInput.value.trim(),
+        password: passInput.value.trim(),
+        otp: otpInput.value.trim()
+      };
+
+      // TODO: Replace with actual backend API call (e.g., fetch('/api/login', ...))
+      console.log('Login data:', loginData);
+
+      // Simulate async request
+      setTimeout(() => {
+        msgDiv.textContent = 'Login request sent. Please check your email or app for 2FA verification if prompted.';
+        // Do not reset form in login usually
+        submitBtn.disabled = false;
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+  <!-- Wooden handle -->
+  <rect x="50" y="50" width="15" height="60" rx="3" ry="3" fill="#7B4E16" />
+  <!-- Metal head base -->
+  <rect x="30" y="20" width="60" height="25" rx="5" ry="5" fill="#A0A0A0" />
+  <!-- Head highlights -->
+  <rect x="40" y="22" width="10" height="20" fill="#C0C0C0" opacity="0.7" />
+  <rect x="60" y="18" width="20" height="10" fill="#D0D0D0" opacity="0.8" />
+  <!-- Hammer striking face -->
+  <rect x="85" y="25" width="10" height="20" fill="#707070" />
+  <!-- Handle shadow -->
+  <rect x="50" y="70" width="15" height="10" fill="#5B3E0E" opacity="0.8" />
+</svg>

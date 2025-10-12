@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaxForge Pricing - Interactive Calculator with Animation and Sound</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <style>
+    #hammer-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      margin-left: -60px;
+      margin-top: -60px;
+      display: none;
+      z-index: 1500;
+      pointer-events: none;
+    }
+    #hammer {
+      width: 100%;
+      height: 100%;
+      transform-origin: 50% 25%;
+      animation-fill-mode: forwards;
+    }
+    @keyframes hammerStrike {
+      0% {
+        transform: rotate(0deg) translateY(0);
+        opacity: 1;
+      }
+      50% {
+        transform: rotate(-25deg) translateY(30px);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(0deg) translateY(0);
+        opacity: 0;
+      }
+    }
+    .pricing-calculator {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .pricing-calculator label {
+      display: block;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .pricing-calculator input[type=checkbox],
+    .pricing-calculator select {
+      margin-right: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 1rem;
+      padding: 0.25rem;
+      cursor: pointer;
+    }
+    .pricing-total {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+      text-align: center;
+      min-height: 2em;
+    }
+    button.calculate-btn {
+      background-color: var(--orange);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      display: block;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    button.calculate-btn:hover {
+      background-color: #e05f2f;
+    }
+    .disclaimer {
+      font-size: 0.875rem;
+      font-style: italic;
+      color: #555;
+      margin-top: 1rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 0 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:center; flex-wrap: wrap;">
+    <a href="index.html" aria-label="Home">
+      <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+    </a>
+    <div style="cursor:pointer">
+      <a href="index.html" style="text-decoration:none;">
+        <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+        <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+          Forging the Future of Tax Solutions
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+  </div>
+  <nav>
+  <ul>
+    <li><a href="index.html" tabindex="0">Home</a></li>
+    <li><a href="services.html" tabindex="0">Services ▼</a>
+      <ul class="dropdown-content">
+        <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+        <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+        <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+        <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+      </ul>
+    </li>
+    <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+    <!-- <li><a href="automation.html" tabindex="0">Automation</a></li> -->
+    <li><a href="about.html" tabindex="0">About Us</a></li>
+    <li><a href="contact.html" tabindex="0">Contact</a></li>
+    <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+    <!-- Added Register and Login -->
+    <li><a href="register.html" tabindex="0">Register</a></li>
+    <li><a href="login.html" tabindex="0">Login</a></li>
+  </ul>
+</nav>
+
+</header>
+
+<main class="container">
+  <h1>Interactive Pricing Calculator</h1>
+  <p>Select the services and business details below to get your estimated monthly cost.</p>
+
+  <form id="pricing-form" class="pricing-calculator" aria-label="Dynamic pricing calculator form">
+    <label><input type="checkbox" name="bookkeeping" value="400" /> Bookkeeping ($400 avg)</label>
+    <label><input type="checkbox" name="taxprep" value="800" /> Tax Preparation ($800 avg)</label>
+    <label><input type="checkbox" name="financial" value="600" /> Financial Advisory ($600 avg)</label>
+    <label><input type="checkbox" name="saas" value="50" /> SaaS Platform Subscription ($50 per user)</label>
+
+    <label for="businessSize">Business Size:</label>
+    <select name="businessSize" id="businessSize" aria-describedby="businessSizeDesc">
+      <option value="1">1-5 Employees</option>
+      <option value="1.5">6-15 Employees</option>
+      <option value="2">16-50 Employees</option>
+      <option value="3">50+ Employees</option>
+    </select>
+    <small id="businessSizeDesc" style="display:block; margin-bottom:1rem; color:#555;">Multiplier for service pricing based on size</small>
+
+    <label for="moneyManaged">Monthly Money Management:</label>
+    <select name="moneyManaged" id="moneyManaged" aria-describedby="moneyManagedDesc">
+      <option value="1">Less than $50k</option>
+      <option value="1.25">$50k - $200k</option>
+      <option value="1.5">$200k - $500k</option>
+      <option value="2">Over $500k</option>
+    </select>
+    <small id="moneyManagedDesc" style="display:block; margin-bottom:1rem; color:#555;">Multiplier for handling larger money flows</small>
+
+    <label for="invoices">Invoices per Week:</label>
+    <select name="invoices" id="invoices" aria-describedby="invoicesDesc">
+      <option value="1">Less than 20</option>
+      <option value="1.25">20-50</option>
+      <option value="1.5">50-100</option>
+      <option value="2">100+</option>
+    </select>
+    <small id="invoicesDesc" style="display:block; margin-bottom:1rem; color:#555;">Impact on bookkeeping and transaction complexity</small>
+
+    <label for="numUsers">Number of Users:</label>
+    <select name="numUsers" id="numUsers" aria-describedby="numUsersDesc">
+      <option value="1">1 User</option>
+      <option value="1.25">2-5 Users</option>
+      <option value="1.5">6-10 Users</option>
+      <option value="2">More than 10 Users</option>
+    </select>
+    <small id="numUsersDesc" style="display:block; margin-bottom:2rem; color:#555;">Affects SaaS platform pricing</small>
+
+    <button type="button" id="calculateBtn" class="calculate-btn" aria-live="polite">Calculate Pricing</button>
+  </form>
+
+  <div class="pricing-total" id="pricingTotal" role="status" aria-live="polite" aria-atomic="true">
+    Your estimated price will appear here.
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This estimate is for informational purposes only and is not a formal quote. A detailed consultation is required to provide an accurate price.
+  </div>
+</main>
+
+<div id="hammer-container" aria-hidden="true">
+  <svg id="hammer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+    <rect x="50" y="50" width="15" height="60" rx="3" ry="3" fill="#7B4E16" />
+    <rect x="30" y="20" width="60" height="25" rx="5" ry="5" fill="#A0A0A0" />
+    <rect x="40" y="22" width="10" height="20" fill="#C0C0C0" opacity="0.7" />
+    <rect x="60" y="18" width="20" height="10" fill="#D0D0D0" opacity="0.8" />
+    <rect x="85" y="25" width="10" height="20" fill="#707070" />
+    <rect x="50" y="70" width="15" height="10" fill="#5B3E0E" opacity="0.8" />
+  </svg>
+</div>
+
+<footer>
+  <small>&copy; 2025 TaxForge. All rights reserved.</small>
+</footer>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navUl = document.querySelector('nav ul');
+  menuToggle.addEventListener('click', () => {
+    navUl.classList.toggle('show');
+  });
+
+  const form = document.getElementById('pricing-form');
+  const calculateBtn = document.getElementById('calculateBtn');
+  const pricingTotal = document.getElementById('pricingTotal');
+  const hammerContainer = document.getElementById('hammer-container');
+  const hammerSVG = document.getElementById('hammer');
+
+  function playMetalTinkRepeated(times, intervalMs) {
+    let count = 0;
+    function playOnce() {
+      if (count >= times) return;
+      const audio = new Audio('sounds/metal_tink.mp3');
+      audio.volume = 0.8;
+      audio.play();
+      count++;
+      setTimeout(playOnce, intervalMs);
+    }
+    playOnce();
+  }
+
+  calculateBtn.addEventListener('click', () => {
+    playMetalTinkRepeated(3, 400);
+
+    hammerContainer.style.display = 'block';
+    hammerSVG.style.animation = 'none';
+    hammerSVG.offsetHeight;
+    hammerSVG.style.animation = 'hammerStrike 1.2s ease forwards';
+
+    setTimeout(() => {
+      let total = 0;
+      const checkedBoxes = form.querySelectorAll('input[type="checkbox"]:checked');
+      checkedBoxes.forEach(box => {
+        total += parseInt(box.value);
+      });
+
+      const sizeMultiplier = parseFloat(form.businessSize.value);
+      const moneyMultiplier = parseFloat(form.moneyManaged.value);
+      const invoicesMultiplier = parseFloat(form.invoices.value);
+      const usersMultiplier = parseFloat(form.numUsers.value);
+
+      let baseTotal = 0;
+      checkedBoxes.forEach(box => {
+        if (box.name !== "saas") {
+          baseTotal += parseInt(box.value);
+        }
+      });
+
+      let adjusted = baseTotal * sizeMultiplier * moneyMultiplier * invoicesMultiplier;
+      if (form.saas.checked) {
+        adjusted += 50 * usersMultiplier;
+      }
+
+      adjusted = Math.round(adjusted);
+
+      pricingTotal.textContent = adjusted > 0
+        ? `Estimated Monthly Price: $${adjusted.toLocaleString()}`
+        : 'Please select at least one service.';
+
+      hammerContainer.style.display = 'none';
+    }, 1200);
+  });
+</script>
+
+<style>
+  @keyframes hammerStrike {
+    0% {
+      transform: rotate(0deg) translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(-25deg) translateY(30px);
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(0deg) translateY(0);
+      opacity: 0;
+    }
+  }
+</style>
+</body>
+</html>

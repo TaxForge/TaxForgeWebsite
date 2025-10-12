@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seo>
+  <page name="homepage">
+    <title>TaxForge - Small Business Accounting, Tax & Financial Services</title>
+    <meta name="description" content="TaxForge provides CPA-led bookkeeping, tax preparation, and financial advisory services with cutting-edge automation. Simplify your business finances today." />
+    <meta name="keywords" content="small business bookkeeping, tax preparation, financial advisory, CPA services, automated bookkeeping SaaS" />
+  </page>
+  <page name="about-us">
+    <title>About TaxForge - CPA-led Finance Solutions</title>
+    <meta name="description" content="Learn about TaxForge’s expert leadership team and our mission to empower small businesses with automated and CPA-backed financial services." />
+    <meta name="keywords" content="about TaxForge, finance leadership, CPA financial services, small business finance experts" />
+  </page>
+  <page name="services">
+    <title>TaxForge Services - Bookkeeping, Tax Preparation, Financial Advisory</title>
+    <meta name="description" content="Explore TaxForge’s suite of services including bookkeeping automation, tax preparation, financial advisory, and cutting-edge SaaS platform for small businesses." />
+    <meta name="keywords" content="bookkeeping automation, tax preparation services, financial advisory, SaaS accounting platform" />
+  </page>
+  <page name="pricing">
+    <title>TaxForge Pricing - Transparent Rates for Accounting & Tax Services</title>
+    <meta name="description" content="View our transparent pricing models for bookkeeping, tax preparation, advisory services, and SaaS platform subscription tiers." />
+    <meta name="keywords" content="accounting pricing, tax prep rates, financial advisory fees, SaaS subscription pricing" />
+  </page>
+  <page name="automation">
+    <title>Automation at TaxForge - Efficient Financial Services with Technology</title>
+    <meta name="description" content="Discover how TaxForge uses automation with QuickBooks, Python, Excel, and SQL to deliver fast, accurate, and scalable financial services." />
+    <meta name="keywords" content="financial automation, bookkeeping software, tax software automation, Python in finance" />
+  </page>
+  <page name="contact">
+    <title>Contact TaxForge - Schedule Your Free Consultation Today</title>
+    <meta name="description" content="Contact TaxForge to learn more about our financial services or schedule a consultation or SaaS platform demo." />
+    <meta name="keywords" content="contact TaxForge, free consultation, financial services inquiry, bookkeeping demo" />
+  </page>
+</seo>

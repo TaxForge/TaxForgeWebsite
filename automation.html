@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Automation at TaxForge - Fast, Accurate Financial Services</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <style>
+    main.container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:center; flex-wrap: wrap;">
+    <a href="index.html" aria-label="Home">
+      <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+    </a>
+    <div style="cursor:pointer">
+      <a href="index.html" style="text-decoration:none;">
+        <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+        <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+          Forging the Future of Tax Solutions
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+  </div>
+<nav>
+  <ul>
+    <li><a href="index.html" tabindex="0">Home</a></li>
+    <li><a href="services.html" tabindex="0">Services ▼</a>
+      <ul class="dropdown-content">
+        <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+        <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+        <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+        <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+      </ul>
+    </li>
+    <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+    <!-- <li><a href="automation.html" tabindex="0">Automation</a></li> -->
+    <li><a href="about.html" tabindex="0">About Us</a></li>
+    <li><a href="contact.html" tabindex="0">Contact</a></li>
+    <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+    <!-- Added Register and Login -->
+    <li><a href="register.html" tabindex="0">Register</a></li>
+    <li><a href="login.html" tabindex="0">Login</a></li>
+  </ul>
+</nav>
+
+</header>
+
+<main class="container">
+  <h1>Automation & Technology</h1>
+  <p>We use top software and programming tools to accelerate delivery and improve accuracy:</p>
+  <ul>
+    <li>QuickBooks, Xero & Proprietary SaaS for bookkeeping automation</li>
+    <li>Excel macros & Python scripts for reporting and validation</li>
+    <li>SQL databases for advanced analysis and data management</li>
+    <li>Tax prep software integration for auto-filling and optimizing</li>
+    <li>AI & machine learning for future automated classification and planning</li>
+  </ul>
+</main>
+
+<footer>
+  <small>&copy; 2025 TaxForge. All rights reserved.</small>
+</footer>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navUl = document.querySelector('nav ul');
+  menuToggle.addEventListener('click', () => {
+    navUl.classList.toggle('show');
+  });
+</script>
+</body>
+</html>

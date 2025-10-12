@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaxForge Services - In-Depth Overview</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <style>
+    main.container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    section.service {
+      margin-bottom: 3rem;
+    }
+    h2 {
+      color: var(--teal);
+      border-bottom: 2px solid var(--orange);
+      padding-bottom: 0.3rem;
+    }
+    .scenario-list {
+      margin-left: 1.25rem;
+      margin-top: 1rem;
+    }
+    .scenario-list li {
+      margin-bottom: 0.5rem;
+    }
+    .note {
+      font-style: italic;
+      color: #888;
+      background: #fff3e6;
+      border-left: 4px solid var(--orange);
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex; align-items:center; flex-wrap: wrap;">
+      <a href="index.html" aria-label="Home">
+        <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+      </a>
+      <div style="cursor:pointer">
+        <a href="index.html" style="text-decoration:none;">
+          <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+          <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+            Forging the Future of Tax Solutions
+          </span>
+        </a>
+      </div>
+      <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+    </div>
+<nav>
+  <ul>
+    <li><a href="index.html" tabindex="0">Home</a></li>
+    <li><a href="services.html" tabindex="0">Services ▼</a>
+      <ul class="dropdown-content">
+        <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+        <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+        <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+        <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+      </ul>
+    </li>
+    <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+    <!-- <li><a href="automation.html" tabindex="0">Automation</a></li> -->
+    <li><a href="about.html" tabindex="0">About Us</a></li>
+    <li><a href="contact.html" tabindex="0">Contact</a></li>
+    <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+    <!-- Added Register and Login -->
+    <li><a href="register.html" tabindex="0">Register</a></li>
+    <li><a href="login.html" tabindex="0">Login</a></li>
+  </ul>
+</nav>
+
+  </header>
+
+  <main class="container" role="main">
+    <h1>Our Services in Depth</h1>
+
+    <section class="service" id="bookkeeping">
+      <h2>Bookkeeping Automation</h2>
+      <p>Accurate and timely bookkeeping is the foundation for healthy business finances. We automate bank feeds and categorize transactions monthly to help you stay on top of your financial records effortlessly.</p>
+      <p>Our service is ideal if you:</p>
+      <ul class="scenario-list">
+        <li>Own a small to medium business with multiple accounts to track.</li>
+        <li>Want to reduce manual bookkeeping errors and save time.</li>
+        <li>Need monthly financial statements for loan applications or investor reports.</li>
+      </ul>
+      <p class="note">Example: A cafe managing daily sales across cash, card, and delivery platforms uses our bookkeeping automation to avoid manual entry errors and generate monthly profit reports for the owner.</p>
+    </section>
+
+    <section class="service" id="taxprep">
+      <h2>Tax Preparation & Planning</h2>
+      <p>Our CPA-led tax preparation service ensures your returns are filed accurately and on time, with strategies tailored to maximize your savings and reduce liabilities.</p>
+      <p>This service is perfect for businesses that:</p>
+      <ul class="scenario-list">
+        <li>Have complex tax situations involving multiple entities or states.</li>
+        <li>Need help identifying eligible deductions and credits.</li>
+        <li>Want proactive planning to minimize their future tax burden.</li>
+      </ul>
+      <p class="note">Example: A freelance consultant with income sources from multiple states leverages our expert tax planning to avoid double taxation and ensure compliance with changing tax laws.</p>
+    </section>
+
+    <section class="service" id="financial">
+      <h2>Financial Advisory & Reporting</h2>
+      <p>With customized forecasting, budgeting, and reporting, we help you understand your business’s financial health and plan for growth.</p>
+      <p>This service benefits businesses that:</p>
+      <ul class="scenario-list">
+        <li>Want to improve cash flow and profitability with clear data insights.</li>
+        <li>Are preparing for funding rounds or expansion and need solid financial plans.</li>
+        <li>Require regular, clear financial reports to inform management decisions.</li>
+      </ul>
+      <p class="note">Example: An e-commerce startup preparing to seek venture capital funding uses our financial advisory service to produce detailed forecasts and KPI dashboards critical to investor presentations.</p>
+    </section>
+
+    <section class="service" id="saas">
+      <h2>SaaS Platform</h2>
+      <p>We’re currently building our proprietary SaaS platform to provide a seamless, centralized cloud-based solution integrating all aspects of bookkeeping, tax prep, and financial advisory.</p>
+      <p>This platform will:</p>
+      <ul class="scenario-list">
+        <li>Consolidate data from multiple sources for real-time insights.</li>
+        <li>Automate routine bookkeeping and tax tasks with AI assistance.</li>
+        <li>Offer dashboards and reporting tailored to your business needs.</li>
+      </ul>
+      <p class="note" style="color:#d2691e; font-weight:bold;">
+        <em>Note: Our SaaS platform is in development and will be launched soon. Contact us for early access or demonstrations.</em>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <small>&copy; 2025 TaxForge. All rights reserved.</small>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navUl = document.querySelector('nav ul');
+    menuToggle.addEventListener('click', () => {
+      navUl.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
