@@ -144,12 +144,12 @@
   <p>Select the services and business details below to get your estimated monthly cost.</p>
 
   <form id="pricing-form" class="pricing-calculator" aria-label="Dynamic pricing calculator form">
-    <label><input type="checkbox" name="bookkeeping" value="220" /> Form 1040 Standard Deductions ($220) </label>
-    <label><input type="checkbox" name="taxprep" value="800" /> Tax Preparation ($800 avg)</label>
-    <label><input type="checkbox" name="financial" value="600" /> Financial Advisory ($600 avg)</label>
+    <label><input type="checkbox" name="bookkeeping" value="220" /> Form 1040 Standard Deductions </label>
+    <label><input type="checkbox" name="taxprep" value="350" /> Form 1040 Itemized Deductions</label>
+    <label><input type="checkbox" name="financial" value="733" /> Partnerships</label>
     <label><input type="checkbox" name="saas" value="50" /> SaaS Platform Subscription ($50 per user)</label>
 
-    <label for="businessSize">Business Size:</label>
+ <!--   <label for="businessSize">Business Size:</label>
     <select name="businessSize" id="businessSize" aria-describedby="businessSizeDesc">
       <option value="1">1-5 Employees</option>
       <option value="1.5">6-15 Employees</option>
@@ -183,6 +183,7 @@
       <option value="1.5">6-10 Users</option>
       <option value="2">More than 10 Users</option>
     </select>
+    -->
     <small id="numUsersDesc" style="display:block; margin-bottom:2rem; color:#555;">Affects SaaS platform pricing</small>
 
     <button type="button" id="calculateBtn" class="calculate-btn" aria-live="polite">Calculate Pricing</button>
@@ -299,4 +300,5 @@
 </style>
 </body>
 </html>
+
 
