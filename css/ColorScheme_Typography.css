@@ -324,6 +324,14 @@ nav li:focus-within > .dropdown-content {
     flex: 1 1 auto;
     margin-bottom: 2rem;
   }
+
+  /* Stack CTA buttons vertically on mobile */
+  #hero .cta-btn {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto;
+    width: fit-content;
+  }
 }
 
 @media (min-width: 769px) {
