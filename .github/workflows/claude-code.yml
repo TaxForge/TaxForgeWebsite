@@ -1,0 +1,62 @@
+name: Claude Code
+
+on:
+  workflow_dispatch:
+    inputs:
+      instruction:
+        description: 'What to build/change'
+        required: true
+        type: string
+      issue_number:
+        description: 'GitHub issue number to update on completion'
+        required: true
+        type: string
+      slack_channel:
+        description: 'Slack channel to notify'
+        required: false
+        type: string
+      slack_thread_ts:
+        description: 'Slack thread to reply to'
+        required: false
+        type: string
+
+jobs:
+  claude:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            ${{ inputs.instruction }}
+
+            When you are done, summarize what you did in a single concise paragraph.
+          allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+
+      - name: Update issue on completion
+        if: success()
+        run: |
+          gh issue comment ${{ inputs.issue_number }} \
+            --body "Completed. Changes committed."
+          gh issue edit ${{ inputs.issue_number }} \
+            --remove-label "in-progress" --add-label "done"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Update issue on failure
+        if: failure()
+        run: |
+          gh issue comment ${{ inputs.issue_number }} \
+            --body "Failed. Check the Action run logs."
+          gh issue edit ${{ inputs.issue_number }} \
+            --remove-label "in-progress" --add-label "failed"
+        env:
+          GH_TOKEN: ${{ github.token }}
