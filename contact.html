@@ -91,6 +91,8 @@
 
 </header>
 
+<div class="nav-backdrop"></div>
+
 <main class="container">
   <h1>Contact Us</h1>
   <p>Ready to simplify your financial management? Reach out for a free consultation or platform demo.</p>
@@ -118,8 +120,16 @@
 <script>
   const menuToggle = document.querySelector('.menu-toggle');
   const navUl = document.querySelector('nav ul');
+  const navBackdrop = document.querySelector('.nav-backdrop');
+
   menuToggle.addEventListener('click', () => {
     navUl.classList.toggle('show');
+    navBackdrop.classList.toggle('show');
+  });
+
+  navBackdrop.addEventListener('click', () => {
+    navUl.classList.remove('show');
+    navBackdrop.classList.remove('show');
   });
 </script>
 </body>

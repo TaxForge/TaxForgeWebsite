@@ -46,6 +46,8 @@
 
   </header>
 
+  <div class="nav-backdrop"></div>
+
   <main class="container">
     <section id="hero" aria-label="Simplify your business finances hero section">
       <h1>Simplify Your Business Finances with TaxForge</h1>
@@ -113,8 +115,16 @@
 
     const menuToggle = document.querySelector('.menu-toggle');
     const navUl = document.querySelector('nav ul');
+    const navBackdrop = document.querySelector('.nav-backdrop');
+
     menuToggle.addEventListener('click', () => {
       navUl.classList.toggle('show');
+      navBackdrop.classList.toggle('show');
+    });
+
+    navBackdrop.addEventListener('click', () => {
+      navUl.classList.remove('show');
+      navBackdrop.classList.remove('show');
     });
   </script>
 </body>
