@@ -312,6 +312,11 @@ nav li:focus-within > .dropdown-content {
     overflow-y: auto;
   }
 
+  nav a {
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+  }
+
   nav ul.show {
     transform: translateX(0);
   }
@@ -328,7 +333,7 @@ nav li:focus-within > .dropdown-content {
     color: white;
     font-size: 2.5rem;
     position: relative;
-    z-index: 1001;
+    z-index: 998;
   }
   #dual-column-container {
     flex-direction: column;
