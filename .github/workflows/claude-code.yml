@@ -36,10 +36,14 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_push: true
           prompt: |
-            ${{ inputs.instruction }}
+            This is a GitHub Pages website (static HTML/CSS/JS).
+            The main site files are in the root directory.
 
-            When you are done, summarize what you did in a single concise paragraph.
+            Task: ${{ inputs.instruction }}
+
+            When you are done, commit your changes and summarize what you did in a single concise paragraph.
           allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
 
       - name: Update issue on completion
