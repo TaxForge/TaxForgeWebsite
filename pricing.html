@@ -152,8 +152,11 @@
 
   <form id="pricing-form" class="pricing-calculator" aria-label="Dynamic pricing calculator form">
     <label><input type="checkbox" name="bookkeeping" value="220" /> Form 1040 Standard Deductions </label>
-    <label><input type="checkbox" name="taxprep" value="350" /> Form 1040 Itemized Deductions</label>
-    <label><input type="checkbox" name="financial" value="733" /> Partnerships</label>
+    <label><input type="checkbox" name="taxprep" value="330" /> Form 1040 Itemized Deductions</label>
+    <label><input type="checkbox" name="financial" value="730" /> Partnerships</label>
+
+    <label for="email" style="margin-top: 1.5rem;">Email Address (Required):</label>
+    <input type="email" id="email" name="email" required placeholder="your.email@example.com" style="width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1rem;" />
 
  <!--   <label for="businessSize">Business Size:</label>
     <select name="businessSize" id="businessSize" aria-describedby="businessSizeDesc">
@@ -254,6 +257,14 @@
   }
 
   calculateBtn.addEventListener('click', () => {
+    // Validate email field
+    const emailInput = document.getElementById('email');
+    if (!emailInput.value || !emailInput.validity.valid) {
+      pricingTotal.textContent = 'Please enter a valid email address to get your quote.';
+      pricingTotal.style.color = '#d9534f';
+      return;
+    }
+
     playMetalTinkRepeated(3, 400);
 
     hammerContainer.style.display = 'block';
@@ -268,27 +279,9 @@
         total += parseInt(box.value);
       });
 
-      const sizeMultiplier = parseFloat(form.businessSize.value);
-      const moneyMultiplier = parseFloat(form.moneyManaged.value);
-      const invoicesMultiplier = parseFloat(form.invoices.value);
-      const usersMultiplier = parseFloat(form.numUsers.value);
-
-      let baseTotal = 0;
-      checkedBoxes.forEach(box => {
-        if (box.name !== "saas") {
-          baseTotal += parseInt(box.value);
-        }
-      });
-
-      let adjusted = baseTotal * sizeMultiplier * moneyMultiplier * invoicesMultiplier;
-      if (form.saas.checked) {
-        adjusted += 50 * usersMultiplier;
-      }
-
-      adjusted = Math.round(adjusted);
-
-      pricingTotal.textContent = adjusted > 0
-        ? `Estimated Monthly Price: $${adjusted.toLocaleString()}`
+      pricingTotal.style.color = 'var(--navy-blue)';
+      pricingTotal.textContent = total > 0
+        ? `Estimated Price: $${total.toLocaleString()}`
         : 'Please select at least one service.';
 
       hammerContainer.style.display = 'none';
