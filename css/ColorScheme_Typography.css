@@ -21,7 +21,13 @@ a, button {
   text-decoration: none;
 }
 
-header, footer {
+header {
+  background-color: var(--navy-blue);
+  color: white;
+  padding: 0.75rem 2rem;
+}
+
+footer {
   background-color: var(--navy-blue);
   color: white;
   padding: 1rem 2rem;
@@ -37,9 +43,9 @@ header {
 }
 
 header img {
-  height: 48px;
+  height: 72px;
   width: auto;
-  max-width: 60px;
+  max-width: 90px;
   display: inline-block;
   vertical-align: middle;
   background: white;
@@ -139,7 +145,7 @@ nav li:focus-within > .dropdown-content {
 /* Hero section */
 #hero {
   max-width: 1200px; /* widened width */
-  margin: 2rem auto;
+  margin: 1rem auto 2rem auto;
   padding: 2rem 1.5rem; /* added horizontal padding for breathing room */
   background-color: var(--navy-blue);
   color: white;
@@ -320,7 +326,7 @@ nav li:focus-within > .dropdown-content {
     background: none;
     border: none;
     color: white;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     position: relative;
     z-index: 1001;
   }
