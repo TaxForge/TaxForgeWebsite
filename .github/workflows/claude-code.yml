@@ -20,6 +20,10 @@ on:
         required: false
         type: string
 
+concurrency:
+  group: claude-code
+  cancel-in-progress: false
+
 jobs:
   claude:
     runs-on: ubuntu-latest
@@ -70,6 +74,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Notify Slack on completion
+        if: success() && inputs.slack_channel
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL: ${{ inputs.slack_channel }}
+          SLACK_THREAD_TS: ${{ inputs.slack_thread_ts }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          jq -n \
+            --arg channel "$SLACK_CHANNEL" \
+            --arg thread_ts "$SLACK_THREAD_TS" \
+            --arg text ":white_check_mark: Done — issue #${ISSUE_NUMBER} changes committed and deployed." \
+            '{channel: $channel, thread_ts: $thread_ts, text: $text}' \
+          | curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @-
+
       - name: Update issue on failure
         if: failure()
         run: |
@@ -79,3 +101,21 @@ jobs:
             --remove-label "in-progress" --add-label "failed"
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Notify Slack on failure
+        if: failure() && inputs.slack_channel
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL: ${{ inputs.slack_channel }}
+          SLACK_THREAD_TS: ${{ inputs.slack_thread_ts }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          jq -n \
+            --arg channel "$SLACK_CHANNEL" \
+            --arg thread_ts "$SLACK_THREAD_TS" \
+            --arg text ":x: Failed — issue #${ISSUE_NUMBER}. Check the Action run logs." \
+            '{channel: $channel, thread_ts: $thread_ts, text: $text}' \
+          | curl -sf -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @-
