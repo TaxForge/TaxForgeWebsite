@@ -332,6 +332,11 @@ nav li:focus-within > .dropdown-content {
     margin-right: auto;
     width: fit-content;
   }
+
+  /* Add padding to slideshow text to prevent arrow overlap on mobile */
+  #slideshow .slides {
+    padding: 0 4rem;
+  }
 }
 
 @media (min-width: 769px) {
