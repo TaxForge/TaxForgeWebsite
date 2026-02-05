@@ -46,18 +46,19 @@ jobs:
           allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
 
       - name: Commit and push changes
+        env:
+          INSTRUCTION: ${{ inputs.instruction }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: ${{ inputs.instruction }}"
+            git commit -m "feat: issue #${{ inputs.issue_number }}"
             git push
           fi
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Update issue on completion
         if: success()
