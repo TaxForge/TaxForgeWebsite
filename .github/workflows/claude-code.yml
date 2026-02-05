@@ -36,15 +36,28 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          direct_push: true
           prompt: |
             This is a GitHub Pages website (static HTML/CSS/JS).
             The main site files are in the root directory.
 
             Task: ${{ inputs.instruction }}
 
-            When you are done, commit your changes and summarize what you did in a single concise paragraph.
+            When you are done, summarize what you did in a single concise paragraph.
           allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat: ${{ inputs.instruction }}"
+            git push
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Update issue on completion
         if: success()
