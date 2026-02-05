@@ -61,6 +61,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "feat: issue #${{ inputs.issue_number }}"
+            git pull --rebase origin main
             git push
           fi
 
