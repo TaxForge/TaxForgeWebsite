@@ -97,16 +97,22 @@
   <h1>Contact Us</h1>
   <p>Ready to simplify your financial management? Reach out for a free consultation or platform demo.</p>
 
-  <form name="contact-form" action="mailto:contact@taxforge.com" method="post" enctype="text/plain">
+  <form id="contact-form" name="contact-form" action="https://formspree.io/f/xyzypwjk" method="POST">
+    <!-- Hidden field for inquiry tracking identifier -->
+    <input type="hidden" name="_subject" value="TaxForge Contact Inquiry" />
+    <input type="hidden" name="inquiry_id" id="inquiry_id" value="" />
+
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required />
-    
+    <input type="text" id="name" name="name" autocomplete="name" required />
+
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required />
-    
+    <input type="email" id="email" name="email" autocomplete="email" required />
+
     <label for="message">Message:</label>
-    <textarea id="message" name="message" rows="4"></textarea>
-    
+    <textarea id="message" name="message" rows="4" required></textarea>
+
+    <div id="form-status" style="margin-top: 1rem; padding: 0.75rem; border-radius: 4px; display: none;"></div>
+
     <button type="submit" class="cta-btn">Send</button>
   </form>
   
@@ -130,6 +136,64 @@
   navBackdrop.addEventListener('click', () => {
     navUl.classList.remove('show');
     navBackdrop.classList.remove('show');
+  });
+
+  // Contact form handling with inquiry ID
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  const inquiryIdField = document.getElementById('inquiry_id');
+
+  // Generate unique inquiry ID on page load
+  function generateInquiryId() {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 9).toUpperCase();
+    return `TF-${timestamp}-${random}`;
+  }
+
+  // Set inquiry ID when page loads
+  inquiryIdField.value = generateInquiryId();
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+
+    const formData = new FormData(contactForm);
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        formStatus.style.display = 'block';
+        formStatus.style.backgroundColor = '#d4edda';
+        formStatus.style.color = '#155724';
+        formStatus.style.border = '1px solid #c3e6cb';
+        formStatus.innerHTML = `<strong>Success!</strong> Your inquiry has been received. Reference ID: <strong>${inquiryIdField.value}</strong><br>We'll get back to you shortly.`;
+        contactForm.reset();
+        // Generate new inquiry ID for next submission
+        inquiryIdField.value = generateInquiryId();
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      formStatus.style.display = 'block';
+      formStatus.style.backgroundColor = '#f8d7da';
+      formStatus.style.color = '#721c24';
+      formStatus.style.border = '1px solid #f5c6cb';
+      formStatus.innerHTML = '<strong>Error!</strong> There was a problem submitting your inquiry. Please try again or call us directly.';
+    } finally {
+      submitButton.textContent = originalButtonText;
+      submitButton.disabled = false;
+    }
   });
 </script>
 </body>
