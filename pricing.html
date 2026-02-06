@@ -151,9 +151,13 @@
   <p>Select the services and business details below to get your estimated monthly cost.</p>
 
   <form id="pricing-form" class="pricing-calculator" aria-label="Dynamic pricing calculator form">
-    <label><input type="checkbox" name="bookkeeping" value="220" /> Form 1040 Standard Deductions </label>
-    <label><input type="checkbox" name="taxprep" value="330" /> Form 1040 Itemized Deductions</label>
-    <label><input type="checkbox" name="financial" value="730" /> Partnerships</label>
+    <label><input type="checkbox" name="form1040" value="220" /> Form 1040 - Not Itemized ($220)</label>
+    <label><input type="checkbox" name="form1040itemized" value="350" /> Form 1040 - Itemized ($350)</label>
+    <label><input type="checkbox" name="partnerships" value="773" /> Partnerships ($773)</label>
+    <label><input type="checkbox" name="nonprofits" value="735" /> Non-Profits ($735)</label>
+    <label><input type="checkbox" name="scorp" value="903" /> S Corp ($903)</label>
+    <label><input type="checkbox" name="corporations" value="913" /> Corporations ($913)</label>
+    <label><input type="checkbox" name="estates" value="1289" /> Estates ($1,289)</label>
 
     <label for="email" style="margin-top: 1.5rem;">Email Address (Required):</label>
     <input type="email" id="email" name="email" required placeholder="your.email@example.com" style="width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1rem;" />
@@ -274,19 +278,49 @@
 
     setTimeout(() => {
       let total = 0;
+      const selectedServices = [];
       const checkedBoxes = form.querySelectorAll('input[type="checkbox"]:checked');
+
       checkedBoxes.forEach(box => {
-        total += parseInt(box.value);
+        const value = parseInt(box.value);
+        total += value;
+        // Get the label text for the selected service
+        const label = box.parentElement.textContent.trim();
+        selectedServices.push(label);
       });
 
-      pricingTotal.style.color = 'var(--navy-blue)';
-      pricingTotal.textContent = total > 0
-        ? `Estimated Price: $${total.toLocaleString()}`
-        : 'Please select at least one service.';
+      if (total > 0) {
+        pricingTotal.style.color = 'var(--navy-blue)';
+        pricingTotal.textContent = `Estimated Price: $${total.toLocaleString()}`;
+
+        // Send email with quote
+        sendQuoteEmail(emailInput.value, selectedServices, total);
+      } else {
+        pricingTotal.style.color = '#d9534f';
+        pricingTotal.textContent = 'Please select at least one service.';
+      }
 
       hammerContainer.style.display = 'none';
     }, 1200);
   });
+
+  function sendQuoteEmail(email, services, total) {
+    // Build email body
+    const servicesList = services.map(s => `• ${s}`).join('\n');
+    const subject = encodeURIComponent('TaxForge Pricing Quote');
+    const body = encodeURIComponent(
+      `Thank you for your interest in TaxForge!\n\n` +
+      `Here is your custom pricing quote:\n\n` +
+      `Selected Services:\n${servicesList}\n\n` +
+      `Total Estimated Price: $${total.toLocaleString()}\n\n` +
+      `This estimate is for informational purposes only. A detailed consultation is required to provide an accurate price.\n\n` +
+      `We will contact you shortly at ${email} to discuss your needs.\n\n` +
+      `Best regards,\nThe TaxForge Team`
+    );
+
+    // Open mailto link
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  }
 </script>
 
 <style>
