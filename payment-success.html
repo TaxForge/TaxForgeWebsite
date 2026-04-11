@@ -139,11 +139,18 @@
 
 <script src="js/auth.js"></script>
 <script>
-  // Initialize Clerk and update nav + dashboard link
+  // Initialize Clerk, update nav, and mark user as having paid
   initClerkAuth().then(function (clerk) {
     if (clerk.user) {
       document.getElementById('dashboard-link').style.display = '';
       document.getElementById('home-link').style.display = 'none';
+
+      // Store hasPaid flag on Clerk user so dashboard knows across devices
+      if (!clerk.user.unsafeMetadata.hasPaid) {
+        clerk.user.update({
+          unsafeMetadata: Object.assign({}, clerk.user.unsafeMetadata, { hasPaid: true })
+        });
+      }
     }
   });
 
@@ -174,15 +181,15 @@
   }
 
   if (serviceName && serviceAmount) {
-    const payments = JSON.parse(sessionStorage.getItem('taxforge_payments') || '[]');
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    var payments = JSON.parse(localStorage.getItem('taxforge_payments') || '[]');
+    var today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     payments.unshift({
       service: sanitizeText(decodeURIComponent(serviceName)),
       amount: sanitizeText(decodeURIComponent(serviceAmount)),
       date: today,
       ref: sanitizeText(sessionId || 'N/A')
     });
-    sessionStorage.setItem('taxforge_payments', JSON.stringify(payments));
+    localStorage.setItem('taxforge_payments', JSON.stringify(payments));
   }
 
   // Mobile menu toggle

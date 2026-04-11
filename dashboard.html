@@ -289,22 +289,14 @@
 
   <div class="dashboard-grid">
 
-    <!-- Invoices & Billing -->
-    <div class="dashboard-card full-width">
+    <!-- Invoices & Billing — shown only after first payment -->
+    <div class="dashboard-card full-width" id="billing-card" style="display:none;">
       <h2>Invoices & Billing</h2>
       <p style="color:#555; font-size:0.9rem; margin-bottom:1rem;">
-        View your payment history and manage billing through Stripe's secure portal. All receipts and invoices from your TaxForge payments are available there.
+        View your payment history and manage billing through Stripe's secure portal.
       </p>
 
-      <div id="invoices-area">
-        <ul class="invoice-list" id="invoice-list">
-          <!-- Populated by sessionStorage payment records, if any -->
-        </ul>
-        <div class="invoice-placeholder" id="invoice-placeholder">
-          <p>Your invoices from Stripe will appear in the Billing Portal.<br />
-          Any payments you make on TaxForge are tracked by the email address you used at checkout.</p>
-        </div>
-      </div>
+      <ul class="invoice-list" id="invoice-list"></ul>
 
       <div style="margin-top:1.25rem;">
         <button class="card-btn btn-navy" id="open-portal-btn" type="button">View Invoices in Billing Portal</button>
@@ -314,6 +306,15 @@
       <div class="portal-notice">
         <strong>How it works:</strong> Clicking "View Invoices in Billing Portal" opens Stripe's secure portal with your email pre-filled. Stripe will send a verification email to confirm your identity, then you can view all invoices, download receipts, and update your payment method.
       </div>
+    </div>
+
+    <!-- No payments yet — shown by default -->
+    <div class="dashboard-card full-width" id="no-billing-card">
+      <h2>Invoices & Billing</h2>
+      <div class="invoice-placeholder">
+        <p>You don't have any invoices yet.<br />Once you make a payment, your billing history and Stripe portal access will appear here.</p>
+      </div>
+      <a href="payment.html" class="card-btn btn-orange">Make a Payment</a>
     </div>
 
     <!-- Services -->
@@ -394,34 +395,44 @@
     var userEmail = getClerkUserEmail();
     document.getElementById('display-email').textContent = userEmail;
 
-    // Load invoices
+    // Check Clerk metadata for payment history (works across devices)
+    var hasPaidViaClerk = clerk.user.unsafeMetadata && clerk.user.unsafeMetadata.hasPaid;
+    if (hasPaidViaClerk) {
+      billingCard.style.display = '';
+      noBillingCard.style.display = 'none';
+    }
+
+    // Also load local invoice records (supplements Clerk flag)
     loadLocalInvoices();
 
-    // Billing portal button
-    document.getElementById('open-portal-btn').addEventListener('click', function () {
-      if (STRIPE_PORTAL_URL === 'YOUR_STRIPE_CUSTOMER_PORTAL_URL') {
-        alert('Billing portal is not yet configured. Please contact TaxForge for billing inquiries.');
-        return;
-      }
-      var separator = STRIPE_PORTAL_URL.includes('?') ? '&' : '?';
-      window.location.href = STRIPE_PORTAL_URL + separator + 'prefilled_email=' + encodeURIComponent(userEmail);
-    });
+    // Billing portal button (only exists when billing card is visible)
+    var portalBtn = document.getElementById('open-portal-btn');
+    if (portalBtn) {
+      portalBtn.addEventListener('click', function () {
+        var separator = STRIPE_PORTAL_URL.includes('?') ? '&' : '?';
+        window.location.href = STRIPE_PORTAL_URL + separator + 'prefilled_email=' + encodeURIComponent(userEmail);
+      });
+    }
   });
 
   // ========================================================
-  // INVOICES — show any locally-tracked payments
+  // INVOICES — show billing card only if payments exist
   // ========================================================
   var invoiceList = document.getElementById('invoice-list');
-  var invoicePlaceholder = document.getElementById('invoice-placeholder');
+  var billingCard = document.getElementById('billing-card');
+  var noBillingCard = document.getElementById('no-billing-card');
 
   function loadLocalInvoices() {
     var payments = [];
     try {
-      payments = JSON.parse(sessionStorage.getItem('taxforge_payments') || '[]');
+      payments = JSON.parse(localStorage.getItem('taxforge_payments') || '[]');
     } catch (e) { /* ignore */ }
 
     if (payments.length > 0) {
-      invoicePlaceholder.style.display = 'none';
+      // Show the full billing card, hide the empty state
+      billingCard.style.display = '';
+      noBillingCard.style.display = 'none';
+
       while (invoiceList.firstChild) invoiceList.removeChild(invoiceList.firstChild);
       payments.forEach(function (p) {
         var li = document.createElement('li');
