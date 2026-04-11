@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaxForge - Secure Payment</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <!-- No Stripe SDK needed — using Payment Links -->
+  <style>
+    main.container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .payment-intro {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .payment-intro p {
+      max-width: 700px;
+      margin: 0.5rem auto;
+      color: #555;
+    }
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .service-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .service-card h3 {
+      color: var(--navy-blue);
+      margin-bottom: 0.5rem;
+    }
+    .service-card .price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange);
+      margin: 1rem 0;
+    }
+    .service-card .description {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1.25rem;
+      min-height: 3rem;
+    }
+    .pay-btn {
+      background-color: var(--orange);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    .pay-btn:hover {
+      background-color: #e05f2f;
+    }
+    .pay-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .stripe-badge {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    .stripe-badge p {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    .stripe-badge .lock-icon {
+      font-size: 1.2rem;
+      margin-right: 0.25rem;
+    }
+    .setup-notice {
+      background: #fff3e6;
+      border-left: 4px solid var(--orange);
+      padding: 1rem 1.5rem;
+      border-radius: 3px;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .setup-notice strong {
+      color: var(--navy-blue);
+    }
+    #payment-error {
+      display: none;
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .disclaimer {
+      font-size: 0.85rem;
+      color: #555;
+      font-style: italic;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .email-collection {
+      max-width: 550px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+    .email-collection label {
+      display: block;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--navy-blue);
+      margin-bottom: 0.25rem;
+    }
+    .email-hint {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+    .email-input-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .email-input-row input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    .email-input-row input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 2px rgba(50, 184, 184, 0.2);
+    }
+    .confirm-email-btn {
+      background-color: var(--teal);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+    }
+    .confirm-email-btn:hover {
+      background-color: #2a9e9e;
+    }
+    .confirm-email-btn:disabled {
+      background-color: #b0d9d9;
+      cursor: not-allowed;
+    }
+    .field-error {
+      color: #d9534f;
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      min-height: 1.2em;
+    }
+    .confirmed-email-banner {
+      max-width: 550px;
+      margin: 0 auto 2rem;
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      color: #155724;
+    }
+    .confirmed-email-banner strong {
+      margin-right: 0.5rem;
+    }
+    .change-email-btn {
+      background: none;
+      border: none;
+      color: var(--teal);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: underline;
+      padding: 0;
+    }
+    .change-email-btn:hover {
+      color: #2a9e9e;
+    }
+    @media (max-width: 768px) {
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+      .email-input-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:center; flex-wrap: wrap;">
+    <a href="index.html" aria-label="Home">
+      <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+    </a>
+    <div style="cursor:pointer">
+      <a href="index.html" style="text-decoration:none;">
+        <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+        <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+          Forging the Future of Tax Solutions
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html" tabindex="0">Home</a></li>
+      <li><a href="services.html" tabindex="0">Services &#9660;</a>
+        <ul class="dropdown-content">
+          <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+          <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+          <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+          <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+        </ul>
+      </li>
+      <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+      <li><a href="about.html" tabindex="0">About Us</a></li>
+      <li><a href="contact.html" tabindex="0">Contact</a></li>
+      <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+      <li class="nav-auth-guest"><a href="register.html" tabindex="0">Register</a></li>
+      <li class="nav-auth-guest"><a href="login.html" tabindex="0">Login</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="dashboard.html" tabindex="0">My Account</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="#" tabindex="0" onclick="logout(); return false;">Logout</a></li>
+      <li><a href="payment.html" tabindex="0">Pay Now</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="nav-backdrop"></div>
+
+<main class="container">
+  <div class="payment-intro">
+    <h1>Secure Payment</h1>
+    <p>Enter your email and select a service below to pay securely via Stripe. All transactions are encrypted and PCI-compliant.</p>
+  </div>
+
+  <!-- Setup notice for site admin — remove once Payment Links are configured -->
+  <div class="setup-notice" id="setup-notice" style="display:none;">
+    <strong>Setup Required:</strong> Replace each <code>PAYMENT_LINK_URL</code> placeholder in this page's source
+    with your actual Stripe Payment Link URLs from the
+    <a href="https://dashboard.stripe.com/payment-links" target="_blank" rel="noopener">Stripe Dashboard</a>.
+  </div>
+
+  <div class="email-collection" id="email-section">
+    <label for="customer-email">Your Email Address</label>
+    <p class="email-hint">This links your payment to your account so you can view receipts and manage billing later.</p>
+    <div class="email-input-row">
+      <input type="email" id="customer-email" placeholder="you@example.com" required />
+      <button type="button" id="confirm-email-btn" class="confirm-email-btn" disabled>Continue</button>
+    </div>
+    <div id="email-error" class="field-error"></div>
+  </div>
+
+  <div id="payment-error" role="alert"></div>
+
+  <div class="service-grid" id="service-grid" style="display:none;">
+
+    <div class="service-card">
+      <h3>Form 1040 — Not Itemized</h3>
+      <div class="price">$220</div>
+      <p class="description">Standard individual tax return preparation for simple filing situations.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/9B6dR9fsM9bX5N7e6t3Je06" onclick="handleCheckout(this)">Pay $220</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Form 1040 — Itemized</h3>
+      <div class="price">$350</div>
+      <p class="description">Itemized individual tax return with deduction optimization and schedule support.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/3cIcN53K4gEp0sN7I53Je05" onclick="handleCheckout(this)">Pay $350</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Partnerships</h3>
+      <div class="price">$773</div>
+      <p class="description">Partnership tax return filing including K-1 preparation and partner allocations.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/28EfZha8s4VHfnHgeB3Je04" onclick="handleCheckout(this)">Pay $773</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Non-Profits</h3>
+      <div class="price">$735</div>
+      <p class="description">Tax-exempt organization returns with compliance review and reporting.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/28E3cv4O81JvdfzgeB3Je03" onclick="handleCheckout(this)">Pay $735</button>
+    </div>
+
+    <div class="service-card">
+      <h3>S Corp</h3>
+      <div class="price">$903</div>
+      <p class="description">S Corporation tax return preparation including shareholder distributions and payroll compliance.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/6oU14ngwQ73P4J34vT3Je02" onclick="handleCheckout(this)">Pay $903</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Corporations</h3>
+      <div class="price">$913</div>
+      <p class="description">Full corporate tax return filing with multi-state compliance and reporting.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/9B65kD4O8ewh4J35zX3Je01" onclick="handleCheckout(this)">Pay $913</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Estates</h3>
+      <div class="price">$1,289</div>
+      <p class="description">Estate and trust tax return preparation with beneficiary allocation and fiduciary compliance.</p>
+      <button class="pay-btn" data-payment-link="https://buy.stripe.com/7sYfZhgwQ1JvejDaUh3Je00" onclick="handleCheckout(this)">Pay $1,289</button>
+    </div>
+
+  </div>
+
+  <div class="stripe-badge">
+    <p><span class="lock-icon">&#128274;</span> Payments processed securely by <strong>Stripe</strong>. Your card details never touch our servers.</p>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> Final pricing may vary after consultation. By proceeding to payment, you agree to TaxForge's terms of service.
+  </div>
+</main>
+
+<footer>
+  <small>&copy; 2025 TaxForge. All rights reserved.</small>
+</footer>
+
+<script src="js/auth.js"></script>
+<script>
+  // ========================================================
+  // EMAIL COLLECTION
+  // If the user is logged in via Clerk, skip the email step.
+  // Otherwise, collect email before showing services.
+  // ========================================================
+  var customerEmail = '';
+
+  var emailInput = document.getElementById('customer-email');
+  var confirmEmailBtn = document.getElementById('confirm-email-btn');
+  var emailSection = document.getElementById('email-section');
+  var emailError = document.getElementById('email-error');
+  var serviceGrid = document.getElementById('service-grid');
+
+  // Show setup notice if any Payment Links are still placeholders
+  (function () {
+    var buttons = document.querySelectorAll('.pay-btn[data-payment-link]');
+    for (var i = 0; i < buttons.length; i++) {
+      if (buttons[i].getAttribute('data-payment-link') === 'PAYMENT_LINK_URL') {
+        document.getElementById('setup-notice').style.display = '';
+        break;
+      }
+    }
+  })();
+
+  // Initialize Clerk and auto-fill email if signed in
+  initClerkAuth().then(function (clerk) {
+    if (clerk.user) {
+      var clerkEmail = getClerkUserEmail();
+      if (clerkEmail) {
+        customerEmail = clerkEmail;
+        showConfirmedBanner(clerkEmail);
+        serviceGrid.style.display = '';
+      }
+    }
+  }).catch(function (err) {
+    console.warn('Clerk auth not available on payment page:', err.message);
+  });
+
+  emailInput.addEventListener('input', function () {
+    confirmEmailBtn.disabled = !emailInput.validity.valid || !emailInput.value.trim();
+    emailError.textContent = '';
+  });
+
+  emailInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!confirmEmailBtn.disabled) confirmEmail();
+    }
+  });
+
+  confirmEmailBtn.addEventListener('click', confirmEmail);
+
+  function showConfirmedBanner(email) {
+    var banner = document.createElement('div');
+    banner.className = 'confirmed-email-banner';
+
+    var span = document.createElement('span');
+    var strong = document.createElement('strong');
+    strong.textContent = 'Email: ';
+    span.appendChild(strong);
+    span.appendChild(document.createTextNode(email));
+
+    var changeBtn = document.createElement('button');
+    changeBtn.className = 'change-email-btn';
+    changeBtn.type = 'button';
+    changeBtn.textContent = 'Change';
+
+    banner.appendChild(span);
+    banner.appendChild(changeBtn);
+
+    emailSection.replaceWith(banner);
+
+    changeBtn.addEventListener('click', function () {
+      banner.replaceWith(emailSection);
+      emailInput.value = customerEmail;
+      emailInput.focus();
+      confirmEmailBtn.disabled = false;
+      serviceGrid.style.display = 'none';
+    });
+  }
+
+  function confirmEmail() {
+    var value = emailInput.value.trim();
+    if (!value || !emailInput.validity.valid) {
+      emailError.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    customerEmail = value;
+    showConfirmedBanner(value);
+    serviceGrid.style.display = '';
+  }
+
+  function showError(message) {
+    var errorDiv = document.getElementById('payment-error');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    setTimeout(function () { errorDiv.style.display = 'none'; }, 8000);
+  }
+
+  // ========================================================
+  // PAYMENT LINK CHECKOUT
+  // Each button has a data-payment-link attribute with the
+  // Stripe Payment Link URL. We append ?prefilled_email= to
+  // pre-fill the customer's email on the Stripe checkout page.
+  // ========================================================
+  function handleCheckout(button) {
+    var paymentLink = button.getAttribute('data-payment-link');
+
+    if (!paymentLink || paymentLink === 'PAYMENT_LINK_URL') {
+      showError('Payment is not yet configured for this service. Please contact TaxForge to arrange payment.');
+      return;
+    }
+
+    if (!customerEmail) {
+      showError('Please enter your email address above before proceeding to payment.');
+      return;
+    }
+
+    var separator = paymentLink.includes('?') ? '&' : '?';
+    window.location.href = paymentLink + separator + 'prefilled_email=' + encodeURIComponent(customerEmail);
+  }
+
+  // Mobile menu toggle
+  var menuToggle = document.querySelector('.menu-toggle');
+  var navUl = document.querySelector('nav ul');
+  var navBackdrop = document.querySelector('.nav-backdrop');
+
+  menuToggle.addEventListener('click', function () {
+    navUl.classList.toggle('show');
+    navBackdrop.classList.toggle('show');
+  });
+
+  navBackdrop.addEventListener('click', function () {
+    navUl.classList.remove('show');
+    navBackdrop.classList.remove('show');
+  });
+</script>
+</body>
+</html>

@@ -49,8 +49,11 @@
     <li><a href="contact.html" tabindex="0">Contact</a></li>
     <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
     <!-- Added Register and Login -->
-    <li><a href="register.html" tabindex="0">Register</a></li>
-    <li><a href="login.html" tabindex="0">Login</a></li>
+    <li class="nav-auth-guest"><a href="register.html" tabindex="0">Register</a></li>
+    <li class="nav-auth-guest"><a href="login.html" tabindex="0">Login</a></li>
+    <li class="nav-auth-user" style="display:none;"><a href="dashboard.html" tabindex="0">My Account</a></li>
+    <li class="nav-auth-user" style="display:none;"><a href="#" tabindex="0" onclick="logout(); return false;">Logout</a></li>
+    <li><a href="payment.html" tabindex="0">Pay Now</a></li>
   </ul>
 </nav>
 
@@ -74,7 +77,10 @@
   <small>&copy; 2025 TaxForge. All rights reserved.</small>
 </footer>
 
+<script src="js/auth.js"></script>
 <script>
+  initClerkAuth();
+
   const menuToggle = document.querySelector('.menu-toggle');
   const navUl = document.querySelector('nav ul');
   const navBackdrop = document.querySelector('.nav-backdrop');

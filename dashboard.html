@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Account - TaxForge</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <style>
+    main.container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Welcome banner */
+    .welcome-banner {
+      background: var(--navy-blue);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .welcome-banner h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .welcome-banner .user-email {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+    .logout-btn {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 0.5rem 1.25rem;
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: white;
+      color: var(--navy-blue);
+    }
+
+    /* Dashboard grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .dashboard-card h2 {
+      color: var(--teal);
+      border-bottom: 2px solid var(--orange);
+      padding-bottom: 0.4rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    /* Invoices section */
+    .invoice-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .invoice-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .invoice-list li:last-child {
+      border-bottom: none;
+    }
+    .invoice-service {
+      font-weight: 600;
+      color: var(--navy-blue);
+    }
+    .invoice-amount {
+      font-weight: 700;
+      color: var(--orange);
+    }
+    .invoice-date {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    .invoice-status {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .status-paid {
+      background: #d4edda;
+      color: #155724;
+    }
+    .invoice-placeholder {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #888;
+    }
+    .invoice-placeholder p {
+      margin-bottom: 1rem;
+    }
+
+    /* Action buttons */
+    .card-btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+      margin-top: 1rem;
+      margin-right: 0.5rem;
+    }
+    .btn-orange {
+      background-color: var(--orange);
+      color: white;
+    }
+    .btn-orange:hover {
+      background-color: #e05f2f;
+      color: white;
+    }
+    .btn-navy {
+      background-color: var(--navy-blue);
+      color: white;
+    }
+    .btn-navy:hover {
+      background-color: #15325a;
+      color: white;
+    }
+    .btn-teal {
+      background-color: var(--teal);
+      color: white;
+    }
+    .btn-teal:hover {
+      background-color: #2a9e9e;
+      color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--teal);
+      color: var(--teal);
+    }
+    .btn-outline:hover {
+      background: var(--teal);
+      color: white;
+    }
+
+    /* Quick links */
+    .quick-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .quick-links li {
+      margin-bottom: 0.6rem;
+    }
+    .quick-links a {
+      color: var(--navy-blue);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .quick-links a:hover {
+      color: var(--orange);
+    }
+    .quick-links a::before {
+      content: '\2192\00a0';
+      color: var(--teal);
+    }
+
+    /* Services list */
+    .service-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .service-item:last-child {
+      border-bottom: none;
+    }
+    .service-name {
+      font-weight: 600;
+      color: var(--navy-blue);
+    }
+    .service-price {
+      font-weight: 700;
+      color: var(--orange);
+    }
+
+    /* Full-width card */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* Portal notice */
+    .portal-notice {
+      background: #fff3e6;
+      border-left: 4px solid var(--orange);
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .welcome-banner {
+        text-align: center;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:center; flex-wrap: wrap;">
+    <a href="index.html" aria-label="Home">
+      <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+    </a>
+    <div style="cursor:pointer">
+      <a href="index.html" style="text-decoration:none;">
+        <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+        <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+          Forging the Future of Tax Solutions
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html" tabindex="0">Home</a></li>
+      <li><a href="services.html" tabindex="0">Services &#9660;</a>
+        <ul class="dropdown-content">
+          <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+          <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+          <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+          <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+        </ul>
+      </li>
+      <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+      <li><a href="about.html" tabindex="0">About Us</a></li>
+      <li><a href="contact.html" tabindex="0">Contact</a></li>
+      <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+      <li class="nav-auth-guest"><a href="register.html" tabindex="0">Register</a></li>
+      <li class="nav-auth-guest"><a href="login.html" tabindex="0">Login</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="dashboard.html" tabindex="0">My Account</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="#" tabindex="0" onclick="logout(); return false;">Logout</a></li>
+      <li><a href="payment.html" tabindex="0">Pay Now</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="nav-backdrop"></div>
+
+<main class="container">
+  <div class="welcome-banner">
+    <div>
+      <h1>Welcome back!</h1>
+      <div class="user-email" id="display-email"></div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <!-- Invoices & Billing -->
+    <div class="dashboard-card full-width">
+      <h2>Invoices & Billing</h2>
+      <p style="color:#555; font-size:0.9rem; margin-bottom:1rem;">
+        View your payment history and manage billing through Stripe's secure portal. All receipts and invoices from your TaxForge payments are available there.
+      </p>
+
+      <div id="invoices-area">
+        <ul class="invoice-list" id="invoice-list">
+          <!-- Populated by sessionStorage payment records, if any -->
+        </ul>
+        <div class="invoice-placeholder" id="invoice-placeholder">
+          <p>Your invoices from Stripe will appear in the Billing Portal.<br />
+          Any payments you make on TaxForge are tracked by the email address you used at checkout.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem;">
+        <button class="card-btn btn-navy" id="open-portal-btn" type="button">View Invoices in Billing Portal</button>
+        <a href="payment.html" class="card-btn btn-orange">Make a Payment</a>
+      </div>
+
+      <div class="portal-notice">
+        <strong>How it works:</strong> Clicking "View Invoices in Billing Portal" opens Stripe's secure portal with your email pre-filled. Stripe will send a verification email to confirm your identity, then you can view all invoices, download receipts, and update your payment method.
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="dashboard-card">
+      <h2>Our Services</h2>
+      <div class="service-item">
+        <span class="service-name">Form 1040 — Not Itemized</span>
+        <span class="service-price">$220</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">Form 1040 — Itemized</span>
+        <span class="service-price">$350</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">Partnerships</span>
+        <span class="service-price">$773</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">Non-Profits</span>
+        <span class="service-price">$735</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">S Corp</span>
+        <span class="service-price">$903</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">Corporations</span>
+        <span class="service-price">$913</span>
+      </div>
+      <div class="service-item">
+        <span class="service-name">Estates</span>
+        <span class="service-price">$1,289</span>
+      </div>
+      <a href="payment.html" class="card-btn btn-orange">Pay for a Service</a>
+      <a href="pricing.html" class="card-btn btn-outline">Pricing Calculator</a>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="dashboard-card">
+      <h2>Quick Links</h2>
+      <ul class="quick-links">
+        <li><a href="payment.html">Make a Payment</a></li>
+        <li><a href="services.html">View All Services</a></li>
+        <li><a href="pricing.html">Pricing Calculator</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="newsletter.html">Newsletter & Beta Signup</a></li>
+        <li><a href="about.html">About TaxForge</a></li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <small>&copy; 2025 TaxForge. All rights reserved.</small>
+</footer>
+
+<script src="js/auth.js"></script>
+<script>
+  // ========================================================
+  // STRIPE CUSTOMER PORTAL
+  // Replace with your Stripe Customer Portal link from:
+  // https://dashboard.stripe.com/settings/billing/portal
+  // ========================================================
+  var STRIPE_PORTAL_URL = 'bpc_1TL6ARFRIzBgM16w7vFOHz1c';
+
+  // ========================================================
+  // CLERK AUTH — wait for Clerk, then initialize dashboard
+  // ========================================================
+  initClerkAuth().then(function (clerk) {
+    // Redirect to login if not authenticated
+    if (!clerk.user) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    // Display user email from Clerk
+    var userEmail = getClerkUserEmail();
+    document.getElementById('display-email').textContent = userEmail;
+
+    // Load invoices
+    loadLocalInvoices();
+
+    // Billing portal button
+    document.getElementById('open-portal-btn').addEventListener('click', function () {
+      if (STRIPE_PORTAL_URL === 'YOUR_STRIPE_CUSTOMER_PORTAL_URL') {
+        alert('Billing portal is not yet configured. Please contact TaxForge for billing inquiries.');
+        return;
+      }
+      var separator = STRIPE_PORTAL_URL.includes('?') ? '&' : '?';
+      window.location.href = STRIPE_PORTAL_URL + separator + 'prefilled_email=' + encodeURIComponent(userEmail);
+    });
+  });
+
+  // ========================================================
+  // INVOICES — show any locally-tracked payments
+  // ========================================================
+  var invoiceList = document.getElementById('invoice-list');
+  var invoicePlaceholder = document.getElementById('invoice-placeholder');
+
+  function loadLocalInvoices() {
+    var payments = [];
+    try {
+      payments = JSON.parse(sessionStorage.getItem('taxforge_payments') || '[]');
+    } catch (e) { /* ignore */ }
+
+    if (payments.length > 0) {
+      invoicePlaceholder.style.display = 'none';
+      while (invoiceList.firstChild) invoiceList.removeChild(invoiceList.firstChild);
+      payments.forEach(function (p) {
+        var li = document.createElement('li');
+
+        var leftDiv = document.createElement('div');
+        var serviceSpan = document.createElement('span');
+        serviceSpan.className = 'invoice-service';
+        serviceSpan.textContent = p.service;
+        var dateSpan = document.createElement('span');
+        dateSpan.className = 'invoice-date';
+        dateSpan.textContent = p.date;
+        leftDiv.appendChild(serviceSpan);
+        leftDiv.appendChild(document.createElement('br'));
+        leftDiv.appendChild(dateSpan);
+
+        var rightDiv = document.createElement('div');
+        rightDiv.style.textAlign = 'right';
+        var amountSpan = document.createElement('span');
+        amountSpan.className = 'invoice-amount';
+        amountSpan.textContent = p.amount;
+        var statusSpan = document.createElement('span');
+        statusSpan.className = 'invoice-status status-paid';
+        statusSpan.textContent = 'Paid';
+        rightDiv.appendChild(amountSpan);
+        rightDiv.appendChild(document.createElement('br'));
+        rightDiv.appendChild(statusSpan);
+
+        li.appendChild(leftDiv);
+        li.appendChild(rightDiv);
+        invoiceList.appendChild(li);
+      });
+    }
+  }
+
+  // Mobile menu toggle
+  var menuToggle = document.querySelector('.menu-toggle');
+  var navUl = document.querySelector('nav ul');
+  var navBackdrop = document.querySelector('.nav-backdrop');
+
+  menuToggle.addEventListener('click', function () {
+    navUl.classList.toggle('show');
+    navBackdrop.classList.toggle('show');
+  });
+
+  navBackdrop.addEventListener('click', function () {
+    navUl.classList.remove('show');
+    navBackdrop.classList.remove('show');
+  });
+</script>
+</body>
+</html>

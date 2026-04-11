@@ -15,10 +15,15 @@ body {
   margin: 0;
 }
 
-/* Link and button style */
+/* Link and button style — scoped to avoid overriding Clerk UI */
 a, button {
   color: var(--orange);
   text-decoration: none;
+}
+#sign-in a, #sign-in button,
+#sign-up a, #sign-up button {
+  color: unset;
+  text-decoration: unset;
 }
 
 header {

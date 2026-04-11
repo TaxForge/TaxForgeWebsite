@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Cancelled - TaxForge</title>
+  <link rel="stylesheet" href="css/ColorScheme_Typography.css" />
+  <style>
+    main.container {
+      max-width: 700px;
+      margin: 3rem auto;
+      padding: 2.5rem 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .cancel-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .cancel-heading {
+      color: #d9534f;
+      margin-bottom: 0.5rem;
+    }
+    .reassurance {
+      color: #555;
+      max-width: 500px;
+      margin: 1rem auto;
+    }
+    .options {
+      text-align: left;
+      max-width: 500px;
+      margin: 2rem auto 0;
+    }
+    .options li {
+      margin-bottom: 0.5rem;
+    }
+    .action-links {
+      margin-top: 2rem;
+    }
+    .action-links a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .action-links .cta-primary {
+      background-color: var(--orange);
+      color: white;
+    }
+    .action-links .cta-primary:hover {
+      background-color: #e05f2f;
+    }
+    .action-links .cta-secondary {
+      background-color: var(--navy-blue);
+      color: white;
+    }
+    .action-links .cta-secondary:hover {
+      background-color: #15325a;
+    }
+    .action-links .cta-outline {
+      border: 2px solid var(--teal);
+      color: var(--teal);
+      background: transparent;
+    }
+    .action-links .cta-outline:hover {
+      background: var(--teal);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:center; flex-wrap: wrap;">
+    <a href="index.html" aria-label="Home">
+      <img src="images/TaxForgeLogo_01.png" alt="TaxForge Logo" />
+    </a>
+    <div style="cursor:pointer">
+      <a href="index.html" style="text-decoration:none;">
+        <span style="font-size:2rem; font-weight:700; letter-spacing:2px; color:white;">TaxForge</span><br />
+        <span style="font-size:1rem; font-weight:400; font-style:italic; color:#FFCFB0; letter-spacing:1px;">
+          Forging the Future of Tax Solutions
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html" tabindex="0">Home</a></li>
+      <li><a href="services.html" tabindex="0">Services &#9660;</a>
+        <ul class="dropdown-content">
+          <li><a href="services.html#bookkeeping" tabindex="0">Bookkeeping</a></li>
+          <li><a href="services.html#taxprep" tabindex="0">Tax Preparation</a></li>
+          <li><a href="services.html#advisory" tabindex="0">Financial Advisory</a></li>
+          <li><a href="services.html#saas" tabindex="0">SaaS Platform</a></li>
+        </ul>
+      </li>
+      <li><a href="pricing.html" tabindex="0">Pricing</a></li>
+      <li><a href="about.html" tabindex="0">About Us</a></li>
+      <li><a href="contact.html" tabindex="0">Contact</a></li>
+      <li><a href="newsletter.html" tabindex="0" aria-label="Go to Newsletter and Beta Signup Page">Newsletter & Beta Signup</a></li>
+      <li class="nav-auth-guest"><a href="register.html" tabindex="0">Register</a></li>
+      <li class="nav-auth-guest"><a href="login.html" tabindex="0">Login</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="dashboard.html" tabindex="0">My Account</a></li>
+      <li class="nav-auth-user" style="display:none;"><a href="#" tabindex="0" onclick="logout(); return false;">Logout</a></li>
+      <li><a href="payment.html" tabindex="0">Pay Now</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="nav-backdrop"></div>
+
+<main class="container">
+  <div class="cancel-icon">&#10060;</div>
+  <h1 class="cancel-heading">Payment Cancelled</h1>
+  <p class="reassurance">No worries — your payment was not processed and you have not been charged. You can try again anytime or reach out to us for help.</p>
+
+  <div class="options">
+    <h3>What You Can Do</h3>
+    <ul>
+      <li>Return to the payment page to select a different service or try again.</li>
+      <li>Contact us if you have questions about pricing or need a custom quote.</li>
+      <li>Call us directly at <a href="tel:(470)435-0289">(470) 435-0289</a> for immediate assistance.</li>
+    </ul>
+  </div>
+
+  <div class="action-links">
+    <a href="payment.html" class="cta-primary">Try Again</a>
+    <a href="contact.html" class="cta-secondary">Contact Us</a>
+    <a href="index.html" class="cta-outline">Return Home</a>
+  </div>
+</main>
+
+<footer>
+  <small>&copy; 2025 TaxForge. All rights reserved.</small>
+</footer>
+
+<script src="js/auth.js"></script>
+<script>
+  initClerkAuth();
+
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navUl = document.querySelector('nav ul');
+  const navBackdrop = document.querySelector('.nav-backdrop');
+
+  menuToggle.addEventListener('click', () => {
+    navUl.classList.toggle('show');
+    navBackdrop.classList.toggle('show');
+  });
+
+  navBackdrop.addEventListener('click', () => {
+    navUl.classList.remove('show');
+    navBackdrop.classList.remove('show');
+  });
+</script>
+</body>
+</html>
